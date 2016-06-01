@@ -1,0 +1,15 @@
+require 'rake'
+require 'json'
+require 'rdoc/task'
+require 'rspec/core/rake_task'
+
+reports_location = "/tmp/reports"
+hosts = ['dashboard-1','dashboard-2','elastic-1','elastic-2','influx-1','influx-2','monitor-1','monitor-2','netmon-1','broker-1','broker-2']
+
+hosts.each { |host|
+	RSpec::Core::RakeTask.new(:spec) do |t|
+		html = "#{reports_location}/#{host}.html"
+		t.pattern = "spec/#{host}/*_spec.rb"
+		t.rspec_opts = ["--format", "html", "--out", html]
+	end
+}
